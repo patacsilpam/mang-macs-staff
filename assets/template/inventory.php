@@ -12,39 +12,39 @@
         <p>Add</p>
         <div class="input-form">
           <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST">
-            <input type="hidden" name="id">
+            <input type="hidden" name="id" id="stocksId">
             <div class="mt2">
               <label for="expirationDate">Expiration Date</label>
               <input type="date" id="expirationDate" name="expirationDate" class="form-control" required>
             </div>
            <div class="mt-2">
               <label for="product">Product</label>
-              <input type="text" class="form-control" name="product" placeholder="Enter Product" required>
+              <input type="text" class="form-control" id="product" name="product" placeholder="Enter Product" required>
            </div>
            <div class="mt-2">
              <label for="status">Status</label>
-             <select name="status" class="form-control">
+             <select name="status" class="form-control" id="status">
                <option value="Available">Availabe</option>
                <option value="Not Available">Not Available</option>
              </select>
            </div>
            <div class="mt-2">
               <label for="quantity">Quantity Purchase</label>
-              <input type="number" class="form-control" name="quantityPurchased" placeholder="Enter Quantity Purchased" required>
+              <input type="number" class="form-control" id="quantityPurchased" name="quantityPurchased" placeholder="Enter Quantity Purchased" required>
            </div>
            <div class="mt-2">
               <label for="quantity">Quantity In Stock</label>
-              <input type="number" class="form-control" name="quantityInStock" placeholder="Enter Quantity In Stock" required>
+              <input type="number" class="form-control" id="quantityInStock"  name="quantityInStock" placeholder="Enter Quantity In Stock" required>
            </div>
           <div class="mt-2">
             <label for="incharge">In charge</label>
-            <input type="text" class="form-control" name="incharge" placeholder="In charge" required>
+            <input type="text" class="form-control" id="incharge" name="incharge" placeholder="In charge" required>
           </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" name="btn-save-inventory">Save</button>
+        <button type="submit" class="btn btn-primary" id="btn-save" name="btn-save-inventory">Save</button>
       </div>
       </form>
     </div>

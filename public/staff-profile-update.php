@@ -1,9 +1,9 @@
 <?php
-error_reporting(0);
+
+require 'public/connection.php';
 require 'public/staff-inventory.php';
 //update form
-function updateAccount(){
-    require 'public/connection.php';
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['btn-update-account'])) {
             $id = mysqli_real_escape_string($connect, $_POST['number']);
@@ -23,7 +23,9 @@ function updateAccount(){
                 $update_admin_profile->bind_param('ssssssi', $fname, $lname, $uname, $email,$imageserverUrl, $position, $id);
                 $update_admin_profile->execute();
                 if ($update_admin_profile) {
-                    header('Location:profile.php?msg-updated');
+                    header('Location:profile.php?success');
+                } else{
+                    header('Location:profile.php?error');
                 }
             } else {
                 $check_admin_profile = $connect->prepare("SELECT * FROM tblusers WHERE id=?");
@@ -37,10 +39,10 @@ function updateAccount(){
                 $update_admin_profile->bind_param('ssssssi', $fname, $lname, $uname, $email, $fetchImage, $position, $id);
                 $update_admin_profile->execute();
                 if ($update_admin_profile) {
-                    header('Location:profile.php');
+                    header('Location:profile.php?success');
+                } else{
+                    header('Location:profile.php?error');
                 }
             }
         }
     }
-}
-updateAccount();

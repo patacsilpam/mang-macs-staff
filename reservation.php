@@ -66,7 +66,7 @@ require 'public/staff-reservation.php';
                                         <button title="Edit" type="button" class="btn btn-transparent"
                                             data-toggle="modal" data-target="#editUsers<?= $fetch['id'] ?>"><i
                                                 class="fas fa-edit" style="color: blue;"></i></button>
-                                        <?php include 'assets/template/admin/bookingStatus.php' ?>
+                                        <?php include 'assets/template/bookingStatus.php' ?>
                                     </td>
                                 </tr>
                                 <?php

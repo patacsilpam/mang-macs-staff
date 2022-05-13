@@ -26,7 +26,15 @@ function insertProducts(){
             $insertProduct->execute();
             //check if true
             if ($insertProduct) {
-                header('Location:products.php?insert-successfully');
+                $_SESSION['status'] = "Successful";
+                $_SESSION['status_code'] = "success"; 
+                $_SESSION['message'] = "Product successfully added"; 
+                header('Location:products.php');
+            } else{
+                $_SESSION['status'] = "UnSuccessful";
+                $_SESSION['status_code'] = "error"; 
+                $_SESSION['message'] = "Could not add product"; 
+                header('Location:products.php');
             }
         }
     }
@@ -54,7 +62,15 @@ function updateProducts(){
                 $updateProduct->execute();
                 if ($updateProduct) {
                     move_uploaded_file($editImageProductTemp,$imageFolderPath);
-                    header('Location:products.php?update-successfully');
+                    $_SESSION['status'] = "Successful";
+                    $_SESSION['status_code'] = "success"; 
+                    $_SESSION['message'] = "Product successfully updated"; 
+                    header('Location:products.php');
+                } else{
+                    $_SESSION['status'] = "UnSuccessful";
+                    $_SESSION['status_code'] = "error"; 
+                    $_SESSION['message'] = "Could not update product"; 
+                    header('Location:inventory.php');
                 }
             } else {
                 //check image product
@@ -69,6 +85,14 @@ function updateProducts(){
                 $updateProduct->bind_param('ssssissi', $editProductName, $editProductCategory, $editProductVariation, $editStatus, $editPrice,  $editProductImage, $edited_at, $id);
                 $updateProduct->execute();
                 if ($updateProduct) {
+                    $_SESSION['status'] = "Successful";
+                    $_SESSION['status_code'] = "success"; 
+                    $_SESSION['message'] = "Product successfully updated"; 
+                    header('Location:products.php?');
+                } else{
+                    $_SESSION['status'] = "UnSuccessful";
+                    $_SESSION['status_code'] = "error"; 
+                    $_SESSION['message'] = "Could not update product";
                     header('Location:products.php?');
                 }
             }
@@ -87,6 +111,14 @@ function deleteProducts(){
             $alterTable = "ALTER TABLE tblproducts AUTO_INCREMENT=1";
             $alter = $connect->query($alterTable);
             if ($alter) {
+                $_SESSION['status'] = "Successful";
+                $_SESSION['status_code'] = "success"; 
+                $_SESSION['message'] = "Product successfully deleted"; 
+                header('Location:products.php?');
+            } else{
+                $_SESSION['status'] = "UnSuccessful";
+                $_SESSION['status_code'] = "error"; 
+                $_SESSION['message'] = "Could not delete product";
                 header('Location:products.php?');
             }
         }

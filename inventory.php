@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="Inventory" content="Mang Macs-Inventory">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -34,7 +35,8 @@
                 <article>
                     <div class="table-responsive table-container">
                         <div class="add-product">
-                            <button title="Add" type="button" class="btn btn-primary btn-add" data-toggle="modal" data-target="#addInventory">Add &nbsp;<i class="fas fa-plus"></i></button>
+                            <button title="Add" type="button" class="btn btn-primary btn-add" data-toggle="modal"
+                                data-target="#addInventory">Add &nbsp;<i class="fas fa-plus"></i></button>
                             <?php include 'assets/template/inventory.php' ?>
                             <br><br>
                         </div>
@@ -43,12 +45,14 @@
                             //message box for registration
                             if (isset($_GET['insert-successfully'])) {
                             ?>
-                                <small style="width:30%" class="alert alert-success msg-Success">Item successfully inserted.</small>
+                            <small style="width:30%" class="alert alert-success msg-Success">Item successfully
+                                inserted.</small>
                             <?php
                             }
                             if (isset($_GET['update-successfully'])) {
                             ?>
-                                <small style="width:30%" class="alert alert-success msg-Success">Item successfully updated.</small>
+                            <small style="width:30%" class="alert alert-success msg-Success">Item successfully
+                                updated.</small>
                             <?php
                             }
                             ?>
@@ -86,22 +90,26 @@
                                         $highligtRow = "#ffffff";
                                     }
                                 ?>
-                                    <tr style="background: <?php echo $highligtRow; ?>;">
-                                        <th scope="row"><?= $fetch['id'] ?></th>
-                                        <td><?= $fetch['created_at'] ?></td>
-                                        <td><?= $fetch['expiration_date'] ?></td>
-                                        <td><?= $fetch['product'] ?></td>
-                                        <td><?= $fetch['quantityPurchased'] ?></td>
-                                        <td><?= $fetch['quantityInStock'] ?></td>
-                                        <td><?= $fetch['quantitySold'] ?></td>
-                                        <td><?= $fetch['status'] ?></td>
-                                        <td><?= $fetch['in_charge'] ?></td>
-                                        <td style="display: flex;">
-                                            <span><button title="Edit" type="button" class="btn btn-success" data-toggle="modal" data-target="#editInventory<?= $fetch['id'] ?>"><i class="fas fa-edit"></i></button></span>
-                                            <?php include 'assets/template/inventory.php' ?>&emsp;
-                                            <span><button title="Delete" type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteInventory<?= $fetch['id'] ?>"><i class="fas fa-trash"></i></button></span>
-                                        </td>
-                                    </tr>
+                                <tr style="background: <?php echo $highligtRow; ?>;">
+                                    <th scope="row"><?= $fetch['id'] ?></th>
+                                    <td><?= $fetch['created_at'] ?></td>
+                                    <td><?= $fetch['expiration_date'] ?></td>
+                                    <td><?= $fetch['product'] ?></td>
+                                    <td><?= $fetch['quantityPurchased'] ?></td>
+                                    <td><?= $fetch['quantityInStock'] ?></td>
+                                    <td><?= $fetch['quantitySold'] ?></td>
+                                    <td><?= $fetch['status'] ?></td>
+                                    <td><?= $fetch['in_charge'] ?></td>
+                                    <td style="display: flex;">
+                                        <span><button title="Edit" type="button" class="btn btn-success"
+                                                data-toggle="modal" data-target="#editInventory<?= $fetch['id'] ?>"><i
+                                                    class="fas fa-edit"></i></button></span>
+                                        <?php include 'assets/template/inventory.php' ?>&emsp;
+                                        <span><button title="Delete" type="button" class="btn btn-danger"
+                                                data-toggle="modal" data-target="#deleteInventory<?= $fetch['id'] ?>"><i
+                                                    class="fas fa-trash"></i></button></span>
+                                    </td>
+                                </tr>
                                 <?php
 
                                 }
@@ -114,10 +122,12 @@
         </main>
         <!--Sidebar-->
         <?php include 'assets/template/sidebar.php' ?>
+        <?php require 'public/staff-alert.php'?>
     </div>
     <script src="assets/js/sidebar-menu-active.js"></script>
     <script src="assets/js/activePage.js"></script>
     <script src="assets/js/table.js"></script>
+   
 </body>
 
 </html>

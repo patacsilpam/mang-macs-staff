@@ -1,6 +1,5 @@
 <?php
-error_reporting(0);
-
+require 'public/staff-inventory.php';
 function addToCart(){
     require 'public/connection.php';
     if (!empty($_GET['action'])) {
@@ -61,6 +60,7 @@ function addToCart(){
         }    
     }
 }
+
 function insertCart(){
     require 'public/connection.php';
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -104,8 +104,11 @@ function insertCart(){
                     $insertCart->bind_param('issiis', $ids,$idNumber,$s_productName,$s_quantity,$s_price,$s_variation);
                     $insertCart->execute();
                     if ($insertCart) {
-                        header('Location:pos.php?insert-cart-successfully');
-                        unset($_SESSION["cart_item"]);
+                        header('Location:pos.php?success');
+                        unset($_SESSION["cart"]);
+                    } else{
+                        header('Location:pos.php?error');     
+                        unset($_SESSION["cart"]);
                     }
                 }
                 else{
@@ -115,31 +118,42 @@ function insertCart(){
                     $insertCart->bind_param('issiis', $ids,$noIdNumber,$s_productName,$s_quantity,$s_price,$s_variation);
                     $insertCart->execute();
                     if ($insertCart) {
-                        header('Location:pos.php?insert-cart-successfully');
-                        unset($_SESSION["cart_item"]);
+                        header('Location:pos.php?success');
+                        unset($_SESSION["cart"]);
+                    }  else{
+                        header('Location:pos.php?error');     
+                        unset($_SESSION["cart"]);
                     }
                 }
             }
             if($selectedCustomer == "PWD" || $selectedCustomer == "Senior Citizen"){
                 $insertPOS = $connect->prepare("INSERT INTO tblpos(id,id_number,customer_type,ordered_date,fname,lname,total,amount_pay,amount_change) VALUES(?,?,?,?,?,?,?,?,?)");
                 echo $connect->error;
-                $insertPOS->bind_param('isssssiii',$posId,$idNumber,$selectedCustomer,$ordered_date,$fname,$lname,$total,$amountPay,$returnChange);
+                $insertPOS->bind_param('isssssiii',$posId,$idNumber,$selectedCustomer,$orderedDate,$fname,$lname,$total,$amountPay,$returnChange);
                 $insertPOS->execute();
                 if ($insertPOS) {
-                    header('Location:pos.php?insert-cart-successfully');
-                    unset($_SESSION["cart_item"]);
+                    header('Location:pos.php?success');
+                    unset($_SESSION["cart"]);
+                } else{
+                    header('Location:pos.php?error');
+                    unset($_SESSION["cart"]);
                 }
             } else{
                 $insertPOS = $connect->prepare("INSERT INTO tblpos(id,id_number,customer_type,ordered_date,fname,lname,total,amount_pay,amount_change) VALUES(?,?,?,?,?,?,?,?,?)");
                 $insertPOS->bind_param('isssssiii',$posId,$noIdNumber,$noSelectedCustomer,$orderedDate,$fname,$lname,$total,$amountPay,$returnChange);
                 $insertPOS->execute();
-                if ($insertPOS) {
-                    header('Location:pos.php?insert-cart-successfully');
-                    unset($_SESSION["cart_item"]);
+                if ($insertPOS) {                  
+                    header('Location:pos.php?success');
+                    unset($_SESSION["cart"]);
+                } else{
+                    unset($_SESSION["cart"]);
+                    header('Location:pos.php?error');
                 }
             }
+        
         }
     }
+
 }
-addToCart();
 insertCart();
+addToCart();

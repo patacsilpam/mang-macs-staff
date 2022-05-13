@@ -69,7 +69,7 @@
                         <p><strong>Email:</strong> <?=$email?></p>
                         <p><strong>Phone Number:</strong> <?=$phoneNumber?></p>
                         <p><strong>Total Amount:</strong> <?=$totalAmount?></p>
-                        <p><strong><a href="#">View Payment</a></strong></p>
+                        <p><strong><a href="view-payment.php?order_number=<?= $getOrderNumber?>">View Payment</a></strong></p>
                         <?php } ?>
                     </article>
                 </article>

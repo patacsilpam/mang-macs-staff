@@ -5,7 +5,11 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" id="myTab">
             <li class="nav-item">
-                <a class="nav-link active m-1  bg-dark text-white" data-toggle="tab" href="#comboBudgetMeals">Combo Budget Meals</a>
+                <a class="nav-link m-1  bg-dark text-white" data-toggle="tab" href="#bilao">Bilao</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active m-1  bg-dark text-white" data-toggle="tab" href="#comboBudgetMeals">Combo
+                    Budget Meals</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link m-1  bg-dark text-white" data-toggle="tab" href="#dimsum">Dimsum</a>
@@ -23,7 +27,8 @@
                 <a class="nav-link m-1  bg-dark text-white" data-toggle="tab" href="#pizza">Pizza</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link m-1  bg-dark text-white" data-toggle="tab" href="#riceMealsWithIceTea">Rice Meals w/ Ice Tea</a>
+                <a class="nav-link m-1  bg-dark text-white" data-toggle="tab" href="#riceMealsWithIceTea">Rice Meals w/
+                    Ice Tea</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link m-1  bg-dark text-white" data-toggle="tab" href="#others">Others</a>
@@ -39,15 +44,15 @@
                     $displayComboMeals = $connect->query($getComboMeals);
                     while ($fetch = $displayComboMeals->fetch_assoc()) {
                     ?>
-                        <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
-                            <input type="hidden" value="<?= $fetch['code'] ?>">
-                            <img src="<?= $fetch['productImage'] ?>" class="img-product">
-                            <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
-                            <small class="text-dark"><?= $fetch['productVariation'] ?></small>
-                            <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
-                            <input type="number" class="form-control input-quantity" value="1" name="quantity">
-                            <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
-                        </form>
+                    <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
+                        <input type="hidden" value="<?= $fetch['code'] ?>">
+                        <img src="<?= $fetch['productImage'] ?>" class="img-product">
+                        <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
+                        <small class="text-dark"><?= $fetch['productVariation'] ?></small>
+                        <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
+                        <input type="number" class="form-control input-quantity" value="1" name="quantity">
+                        <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
+                    </form>
                     <?php
                     }
                     ?>
@@ -62,15 +67,15 @@
                     while ($fetch = $displayDimsum->fetch_assoc()) {
                        
                     ?>
-                        <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
-                            <input type="hidden" value="<?= $fetch['code'] ?>">
-                            <img src="<?= $fetch['productImage'] ?>" class="img-product">
-                            <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
-                            <small class="text-dark"><?= $fetch['productVariation'] ?></small>
-                            <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
-                            <input type="number" class="form-control input-quantity" value="1" name="quantity">
-                            <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
-                        </form>
+                    <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
+                        <input type="hidden" value="<?= $fetch['code'] ?>">
+                        <img src="<?= $fetch['productImage'] ?>" class="img-product">
+                        <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
+                        <small class="text-dark"><?= $fetch['productVariation'] ?></small>
+                        <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
+                        <input type="number" class="form-control input-quantity" value="1" name="quantity">
+                        <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
+                    </form>
                     <?php
                     }
                     ?>
@@ -84,15 +89,15 @@
                     $displayDrinks = $connect->query($getDrinks);
                     while ($fetch = $displayDrinks->fetch_assoc()) {
                     ?>
-                        <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
-                            <input type="hidden" value="<?= $fetch['code'] ?>">
-                            <img src="<?= $fetch['productImage'] ?>" class="img-product">
-                            <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
-                            <small class="text-dark"><?= $fetch['productVariation'] ?></small>
-                            <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
-                            <input type="number" class="form-control input-quantity" value="1" name="quantity">
-                            <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
-                        </form>
+                    <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
+                        <input type="hidden" value="<?= $fetch['code'] ?>">
+                        <img src="<?= $fetch['productImage'] ?>" class="img-product">
+                        <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
+                        <small class="text-dark"><?= $fetch['productVariation'] ?></small>
+                        <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
+                        <input type="number" class="form-control input-quantity" value="1" name="quantity">
+                        <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
+                    </form>
                     <?php
                     }
                     ?>
@@ -106,15 +111,15 @@
                     $displayMeals = $connect->query($getMeals);
                     while ($fetch = $displayMeals->fetch_assoc()) {
                     ?>
-                        <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
-                            <input type="hidden" value="<?= $fetch['code'] ?>">
-                            <img src="<?= $fetch['productImage'] ?>" class="img-product">
-                            <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
-                            <small class="text-dark"><?= $fetch['productVariation'] ?></small>
-                            <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
-                            <input type="number" class="form-control input-quantity" value="1" name="quantity">
-                            <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
-                        </form>
+                    <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
+                        <input type="hidden" value="<?= $fetch['code'] ?>">
+                        <img src="<?= $fetch['productImage'] ?>" class="img-product">
+                        <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
+                        <small class="text-dark"><?= $fetch['productVariation'] ?></small>
+                        <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
+                        <input type="number" class="form-control input-quantity" value="1" name="quantity">
+                        <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
+                    </form>
                     <?php
                     }
                     ?>
@@ -128,15 +133,38 @@
                     $displayPizza = $connect->query($getPizza);
                     while ($fetch = $displayPizza->fetch_assoc()) {
                     ?>
-                        <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
-                            <input type="hidden" value="<?= $fetch['code'] ?>">
-                            <img src="<?= $fetch['productImage'] ?>" class="img-product" />
-                            <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
-                            <small class="text-dark"><?= $fetch['productVariation'] ?></small>
-                            <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
-                            <input type="number" class="form-control input-quantity" value="1" name="quantity">
-                            <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
-                        </form>
+                    <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
+                        <input type="hidden" value="<?= $fetch['code'] ?>">
+                        <img src="<?= $fetch['productImage'] ?>" class="img-product" />
+                        <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
+                        <small class="text-dark"><?= $fetch['productVariation'] ?></small>
+                        <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
+                        <input type="number" class="form-control input-quantity" value="1" name="quantity">
+                        <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
+                    </form>
+                    <?php
+                    }
+                    ?>
+                </div>
+            </div>
+            <div id="bilao" class="container tab-pane fade"><br>
+                <h5>Bilao</h5>
+                <div class="product-container">
+                    <?php
+                    $getBilao = "SELECT * FROM tblproducts WHERE productCategory='Palabok Bilao' OR productCategory='Pancit Bilao(Bihon)' 
+                    OR productCategory='Panict Bilao(Canton)'  OR productCategory='Spaghetti Bilao' ORDER BY productCategory ASC";
+                    $displayBilao = $connect->query($getBilao);
+                    while ($fetch = $displayBilao->fetch_assoc()) {
+                    ?>
+                    <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
+                        <input type="hidden" value="<?= $fetch['code'] ?>">
+                        <img src="<?=$fetch['productImage']?>" class="img-product">
+                        <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
+                        <small class="text-dark"><?= $fetch['productVariation'] ?></small>
+                        <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
+                        <input type="number" class="form-control input-quantity" value="1" name="quantity">
+                        <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
+                    </form>
                     <?php
                     }
                     ?>
@@ -146,20 +174,19 @@
                 <h5>Pasta</h5>
                 <div class="product-container">
                     <?php
-                    $getPasta = "SELECT * FROM tblproducts WHERE productCategory='Palabok Bilao' OR productCategory='Pancit Bilao(Bihon)' 
-                    OR productCategory='Panict Bilao(Canton)'  OR productCategory='Spaghetti Bilao' ORDER BY productCategory ASC";
+                    $getPasta = "SELECT * FROM tblproducts WHERE productCategory='Pasta' ORDER BY productCategory ASC";
                     $displayPasta = $connect->query($getPasta);
                     while ($fetch = $displayPasta->fetch_assoc()) {
                     ?>
-                        <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
-                            <input type="hidden" value="<?= $fetch['code'] ?>">
-                            <img src="<?=$fetch['productImage']?>" class="img-product">
-                            <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
-                            <small class="text-dark"><?= $fetch['productVariation'] ?></small>
-                            <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
-                            <input type="number" class="form-control input-quantity" value="1" name="quantity">
-                            <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
-                        </form>
+                    <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
+                        <input type="hidden" value="<?= $fetch['code'] ?>">
+                        <img src="<?=$fetch['productImage']?>" class="img-product">
+                        <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
+                        <small class="text-dark"><?= $fetch['productVariation'] ?></small>
+                        <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
+                        <input type="number" class="form-control input-quantity" value="1" name="quantity">
+                        <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
+                    </form>
                     <?php
                     }
                     ?>
@@ -173,15 +200,15 @@
                     $displayPasta = $connect->query($getPasta);
                     while ($fetch = $displayPasta->fetch_assoc()) {
                     ?>
-                        <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
-                            <input type="hidden" value="<?= $fetch['code'] ?>">
-                            <img src="<?= $fetch['productImage'] ?>" class="img-product">
-                            <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
-                            <small class="text-dark"><?= $fetch['productVariation'] ?></small>
-                            <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
-                            <input type="number" class="form-control input-quantity" value="1" name="quantity">
-                            <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
-                        </form>
+                    <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
+                        <input type="hidden" value="<?= $fetch['code'] ?>">
+                        <img src="<?= $fetch['productImage'] ?>" class="img-product">
+                        <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
+                        <small class="text-dark"><?= $fetch['productVariation'] ?></small>
+                        <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
+                        <input type="number" class="form-control input-quantity" value="1" name="quantity">
+                        <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
+                    </form>
                     <?php
                     }
                     ?>
@@ -196,15 +223,15 @@
                     $displayOthers = $connect->query($getOthers);
                     while ($fetch = $displayOthers->fetch_assoc()) {
                     ?>
-                        <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
-                            <input type="hidden" value="<?= $fetch['code'] ?>">
-                            <img src="<?= $fetch['productImage'] ?>" class="img-product">
-                            <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
-                            <small class="text-dark"><?= $fetch['productVariation'] ?></small>
-                            <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
-                            <input type="number" class="form-control input-quantity" value="1" name="quantity">
-                            <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
-                        </form>
+                    <form method="POST" action="pos.php?action=add&code=<?= $fetch['code'] ?>" class="box-product">
+                        <input type="hidden" value="<?= $fetch['code'] ?>">
+                        <img src="<?= $fetch['productImage'] ?>" class="img-product">
+                        <strong class="text-product-name"><?= $fetch['productName'] ?></strong>
+                        <small class="text-dark"><?= $fetch['productVariation'] ?></small>
+                        <label class="text-danger">₱<?= $fetch['price'] ?>.00</label>
+                        <input type="number" class="form-control input-quantity" value="1" name="quantity">
+                        <button type="submit" name="add-to-cart" class="btn btn-warning">Add</button>
+                    </form>
                     <?php
                     }
                     ?>
