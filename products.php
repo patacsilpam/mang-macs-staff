@@ -38,7 +38,7 @@
                             <button title="Add Product" type="button" class="btn btn-primary btn-add"
                                 data-toggle="modal" data-target="#addProducts">Add &nbsp;<i
                                     class="fas fa-plus"></i></button>
-                            <?php include 'assets/template/products.php'?>
+                            <?php include 'assets/template/addProduct.php'?>
                             <br><br>
                         </div>
                         <table id="example" class="table table-hover">
@@ -72,10 +72,10 @@
                                     <td><?= $fetch['price'] ?></td>
                                     <td><?= $fetch['status'] ?></td>
                                     <td style="display: flex;">
-                                        <button title="Edit" type="button" class="btn btn-success" data-toggle="modal"
-                                            data-target="#editProducts<?= $fetch['id']; ?>"><i
+                                        <button value="<?=$fetch['productCategory']?>" title="Edit" type="button" class="btn btn-success" data-toggle="modal"
+                                            data-target="#editProducts<?= $fetch['id']; ?>" onclick="clickPrice()"><i
                                                 class="fas fa-edit"></i></button>
-                                        <?php include 'assets/template/products.php'?>&emsp;
+                                        <?php include 'assets/template/editProduct.php'?>&emsp;
                                         <button title="Delete" type="button" class="btn btn-danger" data-toggle="modal"
                                             data-target="#deleteProduct<?= $fetch['id']; ?>"><i
                                                 class="fas fa-trash"></i></button>
@@ -96,7 +96,8 @@
     </div>
     <script src="assets/js/sidebar-menu-active.js"></script>
     <script src="assets/js/activePage.js"></script>
-    <script src="assets/js/table.js"></script>                                
+    <script src="assets/js/table.js"></script>       
+    <script src="assets/js/products.js"></script>                         
 </body>
 
 </html>

@@ -17,14 +17,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
     <link rel="icon" type="image/jpeg" href="assets/images/mang-macs-logo.jpg" sizes="70x70">
     <link rel="stylesheet" href="assets/css/main.css">
-    <title>Stocks</title>
+    <title>Inventory</title>
 </head>
 
 <body>
     <div class="grid-container">
         <!--header-->
         <header class="nav-container">
-            <h3>Stocks</h3>
+            <h3>Inventory</h3>
             <ul class="nav-list">
                 <?php include 'assets/template/navbar.php'?>
             </ul>
@@ -61,14 +61,11 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Created At</th>
-                                    <th scope="col">EXP</th>
-                                    <th scope="col">Product</th>
-                                    <th scope="col">Quantity Purchased</th>
-                                    <th scope="col">Quantity in Stock</th>
-                                    <th scope="col">Quantity Sold</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">In charge</th>
+                                    <th scope="col">Purchased Date</th>
+                                    <th scope="col">EXP Date</th>
+                                    <th scope="col">Item Name</th>
+                                    <th scope="col">Item Purchased</th>
+                                    <th scope="col">Item Stock</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -92,19 +89,16 @@
                                 ?>
                                 <tr style="background: <?php echo $highligtRow; ?>;">
                                     <th scope="row"><?= $fetch['id'] ?></th>
-                                    <td><?= $fetch['created_at'] ?></td>
-                                    <td><?= $fetch['expiration_date'] ?></td>
+                                    <td><?= date('F d, Y',strtotime($fetch['created_at'])) ?></td>
+                                    <td><?= date('F d, Y',strtotime($fetch['expiration_date'])) ?></td>
                                     <td><?= $fetch['product'] ?></td>
                                     <td><?= $fetch['quantityPurchased'] ?></td>
                                     <td><?= $fetch['quantityInStock'] ?></td>
-                                    <td><?= $fetch['quantitySold'] ?></td>
-                                    <td><?= $fetch['status'] ?></td>
-                                    <td><?= $fetch['in_charge'] ?></td>
                                     <td style="display: flex;">
                                         <span><button title="Edit" type="button" class="btn btn-success"
                                                 data-toggle="modal" data-target="#editInventory<?= $fetch['id'] ?>"><i
                                                     class="fas fa-edit"></i></button></span>
-                                        <?php include 'assets/template/inventory.php' ?>&emsp;
+                                        <?php require 'assets/template/inventory.php' ?>&emsp;
                                         <span><button title="Delete" type="button" class="btn btn-danger"
                                                 data-toggle="modal" data-target="#deleteInventory<?= $fetch['id'] ?>"><i
                                                     class="fas fa-trash"></i></button></span>
@@ -127,7 +121,7 @@
     <script src="assets/js/sidebar-menu-active.js"></script>
     <script src="assets/js/activePage.js"></script>
     <script src="assets/js/table.js"></script>
-   
+
 </body>
 
 </html>

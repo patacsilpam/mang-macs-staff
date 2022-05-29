@@ -94,7 +94,7 @@
             <script>
             swal({
                 title: "Successful",
-                text: "Successfully saved",
+                text: "Successfully updated",
                 icon: "success",
                 button: "Ok",
             });
@@ -107,7 +107,7 @@
                 <script>
                     swal({
                         title: "Error",
-                        text: "Could not save item",
+                        text: "Could not updated item",
                         icon: "error",
                         button: "Ok",
                     });

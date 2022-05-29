@@ -28,12 +28,12 @@ function insertProducts(){
             if ($insertProduct) {
                 $_SESSION['status'] = "Successful";
                 $_SESSION['status_code'] = "success"; 
-                $_SESSION['message'] = "Product successfully added"; 
+                $_SESSION['message'] = "Insert new product successfully"; 
                 header('Location:products.php');
             } else{
                 $_SESSION['status'] = "UnSuccessful";
                 $_SESSION['status_code'] = "error"; 
-                $_SESSION['message'] = "Could not add product"; 
+                $_SESSION['message'] = "Could not insert product"; 
                 header('Location:products.php');
             }
         }
@@ -64,7 +64,7 @@ function updateProducts(){
                     move_uploaded_file($editImageProductTemp,$imageFolderPath);
                     $_SESSION['status'] = "Successful";
                     $_SESSION['status_code'] = "success"; 
-                    $_SESSION['message'] = "Product successfully updated"; 
+                    $_SESSION['message'] = "Update product successfully"; 
                     header('Location:products.php');
                 } else{
                     $_SESSION['status'] = "UnSuccessful";
@@ -87,7 +87,7 @@ function updateProducts(){
                 if ($updateProduct) {
                     $_SESSION['status'] = "Successful";
                     $_SESSION['status_code'] = "success"; 
-                    $_SESSION['message'] = "Product successfully updated"; 
+                    $_SESSION['message'] = "Update product successfully"; 
                     header('Location:products.php?');
                 } else{
                     $_SESSION['status'] = "UnSuccessful";
@@ -113,7 +113,7 @@ function deleteProducts(){
             if ($alter) {
                 $_SESSION['status'] = "Successful";
                 $_SESSION['status_code'] = "success"; 
-                $_SESSION['message'] = "Product successfully deleted"; 
+                $_SESSION['message'] = "Delete product successfully"; 
                 header('Location:products.php?');
             } else{
                 $_SESSION['status'] = "UnSuccessful";
