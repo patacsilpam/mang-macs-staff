@@ -86,27 +86,26 @@ function insertCart(){
             $selectedCustomer = $_POST['selectedCustomer'];
             $noSelectedCustomer="";
             $discount = $_POST['discount'];
-            $idNumber = $_POST['idNumber'];
-            $noIdNumber = bin2hex(openssl_random_pseudo_bytes(11));
+            $pwdSeniorNumber = $_POST['idNumber'];
+            $dateCode = date('Ymd');
+            $bindHexCode = bin2hex(openssl_random_pseudo_bytes(5));
+            $noIdNumber = $dateCode.$bindHexCode;
             $discountedPrice = $_POST['discountedPrice'];
             $noDiscount="";
+            $notPwdSenior = "";
+            $status = "Running";
             foreach ($id as $index => $code) {
                 $ids = $code;
-                $ordered_date = $orderedDate[$index];
                 $s_quantity = $quantity[$index];
                 $s_productCode = $productCode[$index];
                 $s_productName = $productName[$index];
                 $s_variation = $variation[$index];
                 $s_price = $price[$index];
                 $s_category= $category[$index];
-                $s_subtotal = $subtotal[$index];
-                $s_total = $total[$index];
-                $_amountPay = $amountPay[$index];
-                $s_returnChange = $returnChange[$index];
                 if($selectedCustomer == "PWD" || $selectedCustomer == "Senior Citizen"){
                     $insertCart = $connect->prepare("INSERT INTO tblposorders(id,id_number,product_code,products,quantity,price,variation,category) 
                     VALUES(?,?,?,?,?,?,?,?)");
-                    $insertCart->bind_param('isssiiss', $ids,$idNumber,$s_productCode,$s_productName,$s_quantity,$s_price,$s_variation,$s_category);
+                    $insertCart->bind_param('isssiiss', $ids,$noIdNumber,$s_productCode,$s_productName,$s_quantity,$s_price,$s_variation,$s_category);
                     $insertCart->execute();
                     if ($insertCart) {
                         header('Location:pos.php?success');
@@ -132,9 +131,9 @@ function insertCart(){
                 }
             }
             if($selectedCustomer == "PWD" || $selectedCustomer == "Senior Citizen"){
-                $insertPOS = $connect->prepare("INSERT INTO tblpos(id,id_number,customer_type,ordered_date,fname,lname,total,discounted_price,amount_pay,amount_change) VALUES(?,?,?,?,?,?,?,?,?,?)");
+                $insertPOS = $connect->prepare("INSERT INTO tblpos(id,id_number,pwd_senior_number,customer_type,ordered_date,fname,lname,total,discounted_price,amount_pay,amount_change,status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
                 echo $connect->error;
-                $insertPOS->bind_param('isssssidii',$posId,$idNumber,$selectedCustomer,$orderedDate,$fname,$lname,$total,$discountedPrice,$amountPay,$returnChange);
+                $insertPOS->bind_param('issssssidiis',$posId,$noIdNumber,$pwdSeniorNumber,$selectedCustomer,$orderedDate,$fname,$lname,$total,$discountedPrice,$amountPay,$returnChange,$status);
                 $insertPOS->execute();
                 if ($insertPOS) {
                     header('Location:pos.php?success');
@@ -144,8 +143,8 @@ function insertCart(){
                     unset($_SESSION["cart"]);
                 }
             } else{
-                $insertPOS = $connect->prepare("INSERT INTO tblpos(id,id_number,customer_type,ordered_date,fname,lname,total,discounted_price,amount_pay,amount_change) VALUES(?,?,?,?,?,?,?,?,?,?)");
-                $insertPOS->bind_param('isssssidii',$posId,$noIdNumber,$noSelectedCustomer,$orderedDate,$fname,$lname,$total,$noDiscount,$amountPay,$returnChange);
+                $insertPOS = $connect->prepare("INSERT INTO tblpos(id,id_number,pwd_senior_number,customer_type,ordered_date,fname,lname,total,discounted_price,amount_pay,amount_change,status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+                $insertPOS->bind_param('issssssidiis',$posId,$noIdNumber,$notPwdSenior,$noSelectedCustomer,$orderedDate,$fname,$lname,$total,$noDiscount,$amountPay,$returnChange,$status);
                 $insertPOS->execute();
                 if ($insertPOS) {                  
                     header('Location:pos.php?success');
@@ -160,5 +159,21 @@ function insertCart(){
     }
 
 }
+function updateOrderStatus(){
+    require 'public/connection.php';
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        if(isset($_POST['btn-update'])){
+            $status = mysqli_real_escape_string($connect,$_POST['orderStatus']);
+            $idNumber = mysqli_real_escape_string($connect,$_POST['idNumber']);
+            $updateStatus = $connect->prepare("UPDATE tblpos SET status = ? WHERE id_number = ?");
+            $updateStatus->bind_param('ss',$status,$idNumber);
+            $updateStatus->execute();
+            if($updateStatus){
+                header('Location:pos-orders.php?true');
+            }
+        }
+    }
+}
+updateOrderStatus();
 insertCart();
 addToCart();

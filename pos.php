@@ -158,42 +158,12 @@ require 'public/staff-pos.php'
         </main>
         <!--Sidebar-->
         <?php include 'assets/template/sidebar.php' ?>
-        <?php
-            if(isset($_GET['success'])){
-                ?>
-            <script>
-            swal({
-                title: "Successful",
-                text: "Successfully saved",
-                icon: "success",
-                button: "Ok",
-            });
-            </script>
-            <?php    
-                unset($_SESSION['status_pos']);
-            } else{
-                if(isset($_GET['error'])){
-                ?>
-                <script>
-                    swal({
-                        title: "Error",
-                        text: "Could not save item",
-                        icon: "error",
-                        button: "Ok",
-                    });
-                </script>
-                <?php
-                }
-            }
-        ?>
+        <?php include 'public/staff-pos-alert.php';?>
     </div>
     <script src="assets/js/sidebar-menu-active.js"></script>
     <script src="assets/js/activePage.js"></script>
     <script src="assets/js/table.js"></script>
     <script src="assets/js/tab.js"></script>
-    
-    
-  
 </body>
 
 </html>
