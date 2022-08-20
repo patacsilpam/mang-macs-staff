@@ -24,18 +24,14 @@
                         </div>
                         <div class="mt-2">
                             <label for="product">Item Name</label>
-                            <input type="text" class="form-control" name="product" placeholder="Enter Product" required>
+                            <input type="text" class="form-control" name="product" placeholder="Enter item name" required>
                         </div>
                         <div class="mt-2">
                             <label for="quantity">Item Purchase</label>
                             <input type="number" class="form-control" name="quantityPurchased"
-                                placeholder="Enter Quantity Purchased" required>
-                        </div>
-                        <div class="mt-2">
-                            <label for="quantity">Item Stock</label>
-                            <input type="number" class="form-control" name="quantityInStock"
-                                placeholder="Enter Quantity In Stock" required>
-                        </div>
+                                placeholder="Enter Quantity Purchased"
+                                required>
+                        </div>    
                 </div>
             </div>
             <div class="modal-footer">
@@ -62,6 +58,7 @@
                 <div class="input-form">
                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST">
                         <input type="hidden" name="id" value="<?=$fetch['id']?>">
+                        <input type="hidden" name="code" value="<?=$fetch['code']?>">
                         <div class="mt2">
                             <label for="expirationDate">Purchased Date</label>
                             <input type="date" id="purchasedDate" name="purchasedDate" class="form-control"
@@ -78,17 +75,11 @@
                                 value="<?=$fetch['product']?>" required>
                         </div>
                         <div class="mt-2">
-                            <label for="quantity">Quantity Purchase</label>
+                            <label for="quantity">Add/Remove Quantity Purchased</label>
                             <input type="number" class="form-control" name="quantityPurchased"
-                                placeholder="Enter Quantity Purchased" value="<?= $fetch['quantityPurchased']?>"
+                                placeholder="Enter Quantity Purchased"
                                 required>
-                        </div>
-                        <div class="mt-2">
-                            <label for="quantity">Quantity In Stock</label>
-                            <input type="number" class="form-control" name="quantityInStock"
-                                placeholder="Enter Quantity Purchased" value="<?= $fetch['quantityInStock']?>" required>
-                        </div>
-                        
+                        </div>    
                 </div>
             </div>
             <div class="modal-footer">
@@ -98,6 +89,35 @@
             </form>
         </div>
     </div>
+</div>
+<!-- View Users -->
+<div class="modal fade" id="viewStocks<?= $fetch['id']; ?>" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Item Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div>
+            <div class="d-flex justify-content-center">
+            </div>
+            <div>
+                <p>Purchased Date: <?=date('F d, Y h:i:s',strtotime($fetch['created_at']));?></p>
+                <p>Expiration Date: <?=date('F d, Y h:i:s',strtotime($fetch['expiration_date']))?></p>
+                <p>Item Name: <?=$fetch['product']?></p>
+                <p>Quantity Purchased: <?=$fetch['quantityPurchased']?></p>
+                <p>Quantity Stock: <?=$fetch['quantityInStock']?></p>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 <!--Delete-->
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST">
@@ -113,10 +133,12 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="id" value="<?= $fetch['id']; ?>">
+                    <input type="hidden" name="code" value="<?= $fetch['code']; ?>">
+                    <input type="hidden" name="purchased" value="<?= $fetch['quantityPurchased']; ?>">
                     <h4>Delete</h4>
                     <div class="modal-body-container">
                         <i class="fas fa-exclamation-circle fa-3x icon-warning"></i><br>
-                        <p class="icon-text-warning">Are you sure you want to delete the product that you selected?</p>
+                        <p class="icon-text-warning">Are you sure you want to delete this item?</p>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -38,7 +38,6 @@
                             <button title="Add" type="button" class="btn btn-primary btn-add" data-toggle="modal"
                                 data-target="#addInventory">Add &nbsp;<i class="fas fa-plus"></i></button>
                             <?php include 'assets/template/inventory.php' ?>
-                            <br><br>
                         </div>
                         <div>
                             <?php
@@ -56,7 +55,7 @@
                             <?php
                             }
                             ?>
-                        </div>
+                        </div>  <br>
                         <table id="example" class="table table-hover">
                             <thead class="thead-dark">
                                 <tr>
@@ -80,11 +79,8 @@
                                     $endDate = date($expiredDate, $offset);
                                     $todayDate = new DateTime($today);
                                     $exp = new DateTime($endDate);
-                                    if ($exp < $todayDate) {
-                                        $highligtRow = "#ff4444";
-                                    }
                                     if ($exp > $todayDate) {
-                                        $highligtRow = "#ffffff";
+                                        $highligtRow = "#e6dccc";
                                     }
                                 ?>
                                 <tr style="background: <?php echo $highligtRow; ?>;">
@@ -95,13 +91,10 @@
                                     <td><?= $fetch['quantityPurchased'] ?></td>
                                     <td><?= $fetch['quantityInStock'] ?></td>
                                     <td style="display: flex;">
-                                        <span><button title="Edit" type="button" class="btn btn-success"
-                                                data-toggle="modal" data-target="#editInventory<?= $fetch['id'] ?>"><i
-                                                    class="fas fa-edit"></i></button></span>
-                                        <?php require 'assets/template/inventory.php' ?>&emsp;
-                                        <span><button title="Delete" type="button" class="btn btn-danger"
-                                                data-toggle="modal" data-target="#deleteInventory<?= $fetch['id'] ?>"><i
-                                                    class="fas fa-trash"></i></button></span>
+                                        <?php require 'assets/template/inventory.php' ?>
+                                        <span><button title="View Stocks" type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#viewStocks<?= $fetch['id'] ?>"><i class="fas fa-eye"></i></button></span>
+                                        <span><button title="Edit" type="button" class="btn btn-success mr-3" data-toggle="modal" data-target="#editInventory<?= $fetch['id'] ?>"><i class="fas fa-edit"></i></button></span>
+                                        <span> <button title="Delete" type="button" class="btn btn-danger mr-3" data-toggle="modal" data-target="#deleteInventory<?= $fetch['id'] ?>"><i class="fas fa-trash"></i></button></span>
                                     </td>
                                 </tr>
                                 <?php

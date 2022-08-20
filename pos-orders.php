@@ -77,7 +77,11 @@ require 'public/staff-pos.php'
                                                 <button title="Edit" type="button" class="btn btn-transparent" data-toggle="modal" data-target="#editPosOrder<?=$idNumber?>"><i class="fas fa-edit" style="color: blue;"></i></button>
                                                 <?php include 'assets/template/pos-orders.php' ?>
                                             </td>
-                                            <td><a href="pos-order-summary.php?id_number=<?=$idNumber?>" title="View Order Details">View Details <i class="fas fa-arrow-circle-right"></i> </a></td>
+                                            <td>
+                                                <a href="pos-order-summary.php?id_number=<?=$idNumber?>" title="View Order Details">
+                                                    <button class="btn btn-primary"><i class="fas fa-eye"></i></button> 
+                                                </a>
+                                            </td>
                                        </tr>
                                         <?php
                                     }

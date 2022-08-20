@@ -46,13 +46,17 @@ require 'public/staff-reservation.php';
                                     <th scope="col">Email</th>
                                     <th scope="col">Guests</th>
                                     <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                     require 'public/connection.php';
-                                    $queryReservation = $connect->query("SELECT * FROM tblreservation WHERE status='Pending' OR status='Booking Received'");
+                                    $time = date('h:i a');
+                                    $queryReservation = $connect->query("SELECT * FROM tblreservation WHERE scheduled_date >=CURDATE() 
+                                    AND status != 'Cancelled' ORDER BY scheduled_date AND scheduled_time  ASC");
                                     while($fetch = $queryReservation->fetch_assoc()){
+                                        "SELECT COUNT(*) as 'active_booking' FROM tblreservation WHERE scheduled_date >= CURDATE() AND scheduled_time >=?"
                                    ?>
                                 <tr>
                                     <td><?= $fetch['id']?></td>
@@ -62,11 +66,16 @@ require 'public/staff-reservation.php';
                                     <td><?= $fetch['email']?></td>
                                     <td><?= $fetch['guests']?></td>
                                     <td>
-                                        <?= $fetch['status']?>
+                                        <input type="text"  class="order-status" value="<?=$fetch['status']?>">
                                         <button title="Edit" type="button" class="btn btn-transparent"
                                             data-toggle="modal" data-target="#editUsers<?= $fetch['id'] ?>"><i
                                                 class="fas fa-edit" style="color: blue;"></i></button>
                                         <?php include 'assets/template/bookingStatus.php' ?>
+                                    </td>
+                                    <td>
+                                    <button title="View Details" type="button" class="btn btn-primary" data-toggle="modal" data-target="#viewTable<?= $fetch['id']; ?>">
+                                        <i class="fas fa-eye"></i>
+                                    </button>  
                                     </td>
                                 </tr>
                                 <?php
@@ -84,6 +93,7 @@ require 'public/staff-reservation.php';
     <script src="assets/js/sidebar-menu-active.js"></script>
     <script src="assets/js/activePage.js"></script>
     <script src="assets/js/table.js"></script>
+    <script src="assets/js/highlight-order-status.js"></script>
 </body>
 
 </html>

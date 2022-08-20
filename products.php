@@ -35,13 +35,13 @@
                 <article>
                     <div class="table-responsive table-container">
                         <div class="add-product">
-                            <button title="Add Product" type="button" class="btn btn-primary btn-add"
-                                data-toggle="modal" data-target="#addProducts">Add &nbsp;<i
-                                    class="fas fa-plus"></i></button>
+                            <button title="Add Product" type="button" class="btn btn-primary btn-add" data-toggle="modal" data-target="#addProducts">Add &nbsp;
+                                <i class="fas fa-plus"></i>
+                            </button>
                             <?php include 'assets/template/addProduct.php'?>
-                            <br><br>
-                        </div>
-                        <table id="example" class="table table-hover">
+                        </div> <br>
+                        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST">
+                        <table id="example" class="table table-hover display">
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">#</th>
@@ -51,7 +51,7 @@
                                     <th scope="col">Product Category</th>
                                     <th scope="col">Variation</th>
                                     <th scope="col">Price</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Time of Preparation</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -60,25 +60,28 @@
                                 $selectProduct = "SELECT * FROM tblproducts";
                                 $displayProduct = $connect->query($selectProduct);
                                 while ($fetch = $displayProduct->fetch_assoc()) {
-                                    
                                 ?>
                                 <tr>
                                     <th scope="row"><?= $fetch['id'] ?></th>
                                     <td><?= $fetch['created_at'] ?></td>
-                                    <td><img src="<?= $fetch['productImage']?>" alt="" width="50"></td>
-                                    <td><?= $fetch['productName']?></td>
+                                    <td><img src="<?= $fetch['productImage']?>" alt="image" width="50" class="img-products"></td>
+                                    <td><?= $fetch['productName'] ?></td>
                                     <td><?= $fetch['productCategory'] ?></td>
                                     <td><?= $fetch['productVariation'] ?></td>
-                                    <td><?= $fetch['price'] ?></td>
-                                    <td><?= $fetch['status'] ?></td>
+                                    <td>₱ <?= $fetch['price'] ?></td>
+                                    <td><?= $fetch['preparationTime']?>mins</td>
                                     <td style="display: flex;">
-                                        <button value="<?=$fetch['productCategory']?>" title="Edit" type="button" class="btn btn-success" data-toggle="modal"
-                                            data-target="#editProducts<?= $fetch['id']; ?>" onclick="clickPrice()"><i
-                                                class="fas fa-edit"></i></button>
-                                        <?php include 'assets/template/editProduct.php'?>&emsp;
+                                    <?php include 'assets/template/editProduct.php'?>
+                                        <button title="View" type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#viewProduct<?= $fetch['id']; ?>"><i
+                                                class="fas fa-eye"></i></button>&emsp;
+                                        <button value="<?= $fetch['productCategory']; ?>" title="Edit" type="button" class="btn btn-success" data-toggle="modal"
+                                            data-target="#editProducts<?= $fetch['id']; ?>"  onclick="clickCategory(this)"><i
+                                                class="fas fa-edit"></i></button> &emsp;    
                                         <button title="Delete" type="button" class="btn btn-danger" data-toggle="modal"
                                             data-target="#deleteProduct<?= $fetch['id']; ?>"><i
                                                 class="fas fa-trash"></i></button>
+                                           
                                     </td>
                                 </tr>
                                 <?php
@@ -86,13 +89,26 @@
                                 ?>
                             </tbody>
                         </table>
+                        </form>
                     </div>
                 </article>
             </section>
         </main>
         <!--Sidebar-->
         <?php include 'assets/template/sidebar.php'?>
-        <?php require 'public/staff-alert.php'?>
+        <?php if(isset($_SESSION['staff-status']) && isset($_SESSION['staff-status']) != ""){
+            ?>
+            <script>
+                swal({
+                    title: "<?php echo $_SESSION['staff-status']; ?>",
+                    text: "<?php echo $_SESSION['staff-message']; ?>",
+                    icon: "<?php echo $_SESSION['staff-code']; ?>",
+                    button: "Ok",
+                    });
+            </script>
+            <?php
+            unset($_SESSION['staff-status']);
+        } ?>
     </div>
     <script src="assets/js/sidebar-menu-active.js"></script>
     <script src="assets/js/activePage.js"></script>

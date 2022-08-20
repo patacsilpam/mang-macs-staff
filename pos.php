@@ -37,9 +37,9 @@ require 'public/staff-pos.php'
             <section>
                 <article>
                     <div class="products-container">
-                        <div class="add-product-container">    
+                    <div class="add-product-container">    
                         <?php
-                            if(isset($_SESSION["cart"])){
+                            if(isset($_SESSION["cart_item"])){
                                 $total_quantity = 0;
                                 $total_price = 0;
                         ?>	
@@ -61,11 +61,11 @@ require 'public/staff-pos.php'
                                         <th class="input-cart">Remove</th>
                                     </tr>	
                                 </thead>
-                                <tbody class="overflow-auto">
-                                    <div>
-                                    <tr>
+                                <tbody>
+                                    <div class="overflow-auto">
+                                    
                                     <?php		
-                                        foreach ($_SESSION["cart"] as $item){
+                                        foreach ($_SESSION["cart_item"] as $item){
                                             $item_price = $item["quantity"]*$item["price"];
                                              $total_quantity += $item["quantity"];
                                                 $total_price += ($item["price"]*$item["quantity"]);
@@ -80,6 +80,7 @@ require 'public/staff-pos.php'
                                                     <a href="pos.php?action=remove&code=<?php echo $item["id"]; ?>"><i class="fas fa-times p-1 mb-2 bg-danger text-white" title="Remove"></i></a>
                                                 </td>
                                                 <input type="hidden" name="id[]" value="0">
+                                                <input type="hidden" name="idNumber[]" value="0">
                                                 <input type="hidden" name="productCode[]" value="<?= $item['productCode']?>">
                                                 <input type="hidden" name="productName[]" value="<?= $item['name']?>">
                                                 <input type="hidden" name="productCategory[]" value="<?= $item['category']?>">
@@ -87,14 +88,15 @@ require 'public/staff-pos.php'
                                                 <input type="hidden" name="variation[]" value="<?= $item["variation"]; ?>">
                                                 <input type="hidden" name="price[]" value="<?= $item["price"]; ?>" >
                                                 <input type="hidden" name="subTotal[]" value="<?= $item_price; ?>">
-                                                <input type="hidden" name="totalQuantity[]" value="<?= $total_quantity; ?>">
+                                                <input type="hidden" name="totalQuantity" value="<?= $total_quantity; ?>">
                                                 <input type="hidden" name="totalPrice" value="<?= $total_price; ?>">
+                                                <!---Add Category and Product Code Here :)----!-->
                                             </tr>
                                             <?php
                                                
                                         }
                                             ?>
-                                        <tr>
+                                        
                                     </div>
                                 </tbody>
                             </table>
@@ -102,19 +104,18 @@ require 'public/staff-pos.php'
                             <div class="empty-cart">
                                 <table class="table table-bordered">
                                     <tr>
-                                        <td>Total:</td>
+                                        <td>Total Purchase Items:</td>
                                         <td><?= $total_quantity; ?></td>
                                     </tr>	
                                     <tr>
-                                        <td>Total Price</td>
+                                        <td>Total Price:</td>
                                         <td>₱<?= number_format($total_price,2); ?></td>
                                     </tr>
                                 </table>
                                 <div class="empty-table-cart-btn">
-                                    <a href="pos.php" data-toggle="modal" data-target="#emptyCart" class="btn btn-secondary"><i class="fas fa-table"></i> Empty</a>
-                                    <a href="pos.php" data-toggle="modal" data-target="#cancelCart" class="btn btn-danger"><i class="fas fa-window-close"></i> Cancel</a>
-                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#payModal"><i class="fas fa-file-invoice-dollar"></i> Pay</button>
-                                    <?php include 'assets/template/pos-pay.php'?>
+                                    <button title="Cancel" type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancelCart"><i class="fas fa-window-close"></i> Cancel</button>
+                                    <button title="Pay" type="button" class="btn btn-success" data-toggle="modal" data-target="#payModal"><i class="fas fa-file-invoice-dollar"></i> Pay</button>
+                                    <?php include 'assets/template/admin/pos-pay.php'?>
                                 </div>
                             </div>
                         </form>
@@ -130,18 +131,17 @@ require 'public/staff-pos.php'
                                     </div>
                                     <table class="table table-bordered empty-table">
                                         <tr>
-                                            <td>Total items</td>
+                                            <td>Total Purchase Items:</td>
                                             <td>0</td>
                                         </tr>
                                         <tr>
-                                            <td>Total Price</td>
+                                            <td>Total Price:</td>
                                             <td>0.00</td>
                                         </tr>
                                     </table>
                                     <div class="empty-table-cart-btn">
-                                        <button type="button" class="btn btn-secondary"><i class="fas fa-table"></i> Empty</button>
                                         <button type="button" class="btn btn-danger"><i class="fas fa-window-close"></i> Cancel</button>
-                                        <button type="button" class="btn btn-success"><i class="fas fa-save"></i> Pay</button>
+                                        <button type="button" class="btn btn-success"><i class="fas fa-file-invoice-dollar"></i> Pay</button>
                                     </div>
                                 </div>
                             <?php
@@ -149,8 +149,8 @@ require 'public/staff-pos.php'
                             ?>
                                    
                         </div>
-                            <?php include 'assets/template/pos.php'?>
-                            <?php include 'assets/template/emptyCart.php'?>
+                            <?php require 'assets/template/pos.php'?>    
+                            <?php include 'assets/template/emptyCart.php'?> 
                         </div>
                     </div>
                 </article>
