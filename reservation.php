@@ -53,8 +53,10 @@ require 'public/staff-reservation.php';
                                 <?php
                                     require 'public/connection.php';
                                     $time = date('h:i a');
-                                    $queryReservation = $connect->query("SELECT * FROM tblreservation WHERE scheduled_date >=CURDATE() 
-                                    AND status != 'Cancelled' ORDER BY scheduled_date AND scheduled_time  ASC");
+                                    $queryReservation = $connect->query("SELECT * FROM tblreservation 
+                                    WHERE STR_TO_DATE(CONCAT(scheduled_date,' ', scheduled_time),'%Y-%m-%d %h:%i %p') 
+                                    >= DATE_SUB(now(),INTERVAL 30 minute) AND status != 'Cancelled' AND status != 'No Shows'
+                                    ORDER BY STR_TO_DATE(CONCAT(scheduled_date,' ', scheduled_time),'%Y-%m-%d %h:%i %p') ASC");
                                     while($fetch = $queryReservation->fetch_assoc()){
                                         "SELECT COUNT(*) as 'active_booking' FROM tblreservation WHERE scheduled_date >= CURDATE() AND scheduled_time >=?"
                                    ?>
