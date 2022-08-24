@@ -109,7 +109,8 @@
         </main>
         <!--Sidebar-->
         <?php include 'assets/template/sidebar.php' ?>
-        <?php require 'public/staff-alert.php'?>
+         <!--Insert sweet alert message-->
+         <?php require_once 'public/staff-alert-inventory.php'?>
     </div>
     <script src="assets/js/sidebar-menu-active.js"></script>
     <script src="assets/js/activePage.js"></script>

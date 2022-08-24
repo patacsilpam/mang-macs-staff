@@ -96,19 +96,8 @@
         </main>
         <!--Sidebar-->
         <?php include 'assets/template/sidebar.php'?>
-        <?php if(isset($_SESSION['staff-status']) && isset($_SESSION['staff-status']) != ""){
-            ?>
-            <script>
-                swal({
-                    title: "<?php echo $_SESSION['staff-status']; ?>",
-                    text: "<?php echo $_SESSION['staff-message']; ?>",
-                    icon: "<?php echo $_SESSION['staff-code']; ?>",
-                    button: "Ok",
-                    });
-            </script>
-            <?php
-            unset($_SESSION['staff-status']);
-        } ?>
+         <!--Insert sweet alert message-->
+         <?php require_once 'public/staff-alert-products.php'?>
     </div>
     <script src="assets/js/sidebar-menu-active.js"></script>
     <script src="assets/js/activePage.js"></script>
