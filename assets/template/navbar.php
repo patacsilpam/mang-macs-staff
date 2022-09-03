@@ -40,7 +40,7 @@
 <li class="dropdown">
     <button type="button" class="button admin-name-right" style="color: black;" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
-        <a href="profile.php" class="text-dark"><?php echo $_SESSION['fname'] . " " . $_SESSION['lname'] ?>
+        <a href="profile.php" class="text-dark"><?php echo $_SESSION['staff-fname'] . " " . $_SESSION['staff-lname'] ?>
         &emsp;<i class="fas fa-caret-down"></i></a>
     </button>
     <div class="dropdown-menu dropdown-profile-list">

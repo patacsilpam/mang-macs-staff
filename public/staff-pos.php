@@ -95,7 +95,7 @@ function insertCart(){
             $discountedPrice = $_POST['discountedPrice'];
             $noDiscount = "";
             $notPwdSenior = "";
-            $status = "Running";
+            $status = "Processing";
           
            foreach ($id as $index => $code) {
                 $ids = $code;
@@ -118,10 +118,10 @@ function insertCart(){
                     $insertCart->execute();
                     if ($insertCart) {
                         header('Location:pos.php?success');
-                        unset($_SESSION["cart_item"]);
+                        unset($_SESSION["cart"]);
                     } else{
                         header('Location:pos.php?error');
-                        unset($_SESSION["cart_item"]);
+                        unset($_SESSION["cart"]);
                     }
                 }
                 else{
@@ -131,10 +131,10 @@ function insertCart(){
                     $insertCart->execute();
                     if ($insertCart) {
                         header('Location:pos.php?success');
-                        unset($_SESSION["cart_item"]);
+                        unset($_SESSION["cart"]);
                     } else{
                         header('Location:pos.php?error');
-                        unset($_SESSION["cart_item"]);
+                        unset($_SESSION["cart"]);
                     }
                 }
             }
@@ -146,7 +146,7 @@ function insertCart(){
                     $insertPOS->execute();
                     if ($insertPOS) {
                         header('Location:pos.php?success');
-                        unset($_SESSION["cart_item"]);
+                        unset($_SESSION["cart"]);
                     }
                 } else{
                     $insertPOS = $connect->prepare("INSERT INTO tblpos(id,id_number,pwd_senior_number,customer_type,ordered_date,fname,lname,total,discounted_price,amount_pay,amount_change,status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -154,10 +154,10 @@ function insertCart(){
                     $insertPOS->execute();
                     if ($insertPOS) {
                         header('Location:pos.php?success');
-                        unset($_SESSION["cart_item"]);
+                        unset($_SESSION["cart"]);
                     } else{
                         header('Location:pos.php?error');
-                        unset($_SESSION["cart_item"]);
+                        unset($_SESSION["cart"]);
                     }
                }
         }
@@ -171,13 +171,28 @@ function updateOrderStatus(){
             $idNumber = mysqli_real_escape_string($connect,$_POST['idNumber']);
             $updateStatus = $connect->prepare("UPDATE tblpos SET status = ? WHERE id_number = ?");
             $updateStatus->bind_param('ss',$status,$idNumber);
-            $updateStatus->execute();
-            if($updateStatus){
-                header('Location:pos-orders.php?true');
+            if($updateStatus->execute()){
+                header('Location:pos-orders.php');
+                $id = null;
+                $fullname = $_SESSION['staff-fname']." ".$_SESSION['staff-lname'];
+                $sales = $_POST['sales'];
+                $userType = "Staff";
+                $reportDate = date('Y-m-d h:i:s');
+                //insert report sale
+                $insertSale = $connect->prepare("INSERT INTO tblreport(id,fullname,sales,user_type,report_date) VALUES(?,?,?,?,?)");
+                echo $connect->error;
+                $insertSale->bind_param('isiss',$id,$fullname,$sales,$userType,$reportDate);
+                $insertSale->execute();
             }
+           
         }
     }
 }
+
+
+    
+   
+
 addToCart();
 insertCart();
 updateOrderStatus();

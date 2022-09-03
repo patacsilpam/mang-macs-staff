@@ -2,7 +2,7 @@
 require 'public/connection.php';
 
 session_start();
-if (!isset($_SESSION['loggedIn'])) {
+if (!isset($_SESSION['staff-loggedIn'])) {
     header('Location:login.php');
 }
 date_default_timezone_set('Asia/Manila');

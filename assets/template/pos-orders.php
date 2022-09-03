@@ -14,9 +14,13 @@
                     <label for="">Change Order Status</label><br>
                     <input type="hidden" value="<?= $idNumber ?>" name="idNumber">
                     <select class="form-control" name="orderStatus">
-                        <option value="Running" <?php if($statuss == "Running") echo 'selected ? "selected"';?>>Running</option>
-                        <option value="Settled" <?php if($statuss == "Settled") echo 'selected ? "selected"';?>>Settled</option>
+                        <option value="Processing" <?php if($statuss == "Processing") echo 'selected ? "selected"';?>>Processing</option>
+                        <option value="Completed" <?php if($statuss == "Completed") echo 'selected ? "selected"';?>>Completed</option>
                     </select>
+                    <div style="">
+                        
+                        <input type="text" name="sales" value="<?php if($discountedPrice == 0){ echo $total;} else{echo $discountedPrice;}?>">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

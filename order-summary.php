@@ -1,4 +1,7 @@
-<?php require 'public/staff-inventory.php';?>
+<?php 
+require 'public/staff-inventory.php';
+require 'public/staff-courier.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,15 +11,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="Orders" content="Mang Macs-Orders">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <script src="assets/js/setCourier.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
     <link rel="icon" type="image/jpeg" href="assets/images/mang-macs-logo.jpg" sizes="70x70">
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/main.css" type="text/css">
     <title>Order Summary</title>
 </head>
 
@@ -42,10 +48,10 @@
                 <hr>
                 <article class="order-summary-details">
                     <article>
-                    <?php
+                        <?php
                         require 'public/connection.php';
                         $getOrderNumber = $_GET['order_number'];
-                        $getOrderSummary = $connect->prepare("SELECT tblcustomerorder.order_number,tblcustomerorder.customer_name,
+                        $getOrderSummary = $connect->prepare("SELECT tblcustomerorder.order_number,tblcustomerorder.courier,tblcustomerorder.customer_name,
                             tblorderdetails.created_at,tblorderdetails.required_date,tblorderdetails.required_time,
                             tblorderdetails.order_type,tblorderdetails.order_status,tblcustomerorder.email,
                             tblcustomerorder.phone_number,tblcustomerorder.total_amount,tblcustomerorder.delivery_fee
@@ -54,15 +60,29 @@
                             WHERE tblorderdetails.order_number=? LIMIT 1");
                         $getOrderSummary->bind_param('s',$getOrderNumber);
                         $getOrderSummary->execute();
-                        $getOrderSummary->bind_result($orderNumber,$customerName,$placedOn,$requiredDate,$requiredTime,$orderType,$orderStatus,$email,$phoneNumber,$totalAmount,$deliveryFee);
+                        $getOrderSummary->bind_result($orderNumber,$courierName,$customerName,$placedOn,$requiredDate,$requiredTime,$orderType,$orderStatus,$email,$phoneNumber,$totalAmount,$deliveryFee);
                         while($getOrderSummary->fetch()){
                         $GLOBALS['totalAmount'] = $totalAmount;
                    ?>
                         <p><strong>Order Number:</strong> <?=$orderNumber?></p>
-                        <p><strong>Customer name:</strong> <?=$customerName?></p>
+                        <p><strong>Account name:</strong> <?=$customerName?></p>
                         <p><strong>Date Added:</strong> <?=$placedOn?></p>
                         <p><strong>Delivery Time:</strong> <?=$requiredDate." ". $requiredTime?></p>
                         <p><strong>Order Type:</strong> <?=$orderType; ?></p>
+                        <p>
+                            <div id="setCourier">
+                                <div style="display:flex; align-items:center; flex-direction:row;" >
+                                    <strong>Courier</strong>
+                                    <?php include 'assets/template/setCourier.php' ?>
+                                    <button title="Edit" type="button" class="btn btn-transparent" data-toggle="modal" data-target="#setCourier<?=$orderNumber?>">
+                                        <i class="fas fa-edit" style="color: blue;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </p>
+                        <p style="display:none;">
+                            <input type="text" value="<?=$orderType?>" id="courier">
+                        </p>
                     </article>
                     <article>
                         <p><strong>Order Status:</strong> <?=$orderStatus?></p>
@@ -106,7 +126,7 @@
                                 <tbody>
                                     <?php
                                     require 'public/connection.php';
-                                    $recipientName = "";
+                                    $recipientName="";
                                     $orderNumber = $_GET['order_number'];
                                     $getOrderSummary = $connect->prepare("SELECT order_number,product_name,quantity,price,product_variation,add_ons,recipient_name FROM tblorderdetails WHERE order_number=?");
                                     echo $connect->error;
@@ -123,14 +143,14 @@
                                         <td><?=$price?></td>
                                         <td><?=$variation?></td>
                                         <td><?=$addOns?></td>
-                                        <td><?=$subTotal = $price * $quantity;?></td>
+                                        <td><?=$subTotal = $price * $quantity;?>.00</td>
                                     </tr>
                                     <?php
                                     }
                                     
                                ?>
                                 </tbody>
-                                <tfoot>
+                               <tfoot>
                                     <tr>
                                         <td colspan="5"></td>
                                         <td><b>Delivery Fee</b>: </td>
@@ -139,7 +159,7 @@
                                     <tr>
                                         <td colspan="5"></td>
                                         <td><b>Grand Total</b>: </td>
-                                        <td>PHP <?= $totalAmount?>.00</td>
+                                        <td>₱ <?= $totalAmount?>.00</td>
                                     </tr>
                                </tfoot>
                             </table>
@@ -150,13 +170,13 @@
                         <?php
                             $orderNumber = $_GET['order_number'];
                             require 'public/connection.php';
-                            $getOrder = $connect->prepare("SELECT customer_address,label_address FROM tblcustomerorder WHERE order_number=?");
+                            $getOrder = $connect->prepare("SELECT customer_address,label_address FROM tblcustomerorder WHERE order_number=? LIMIT 1");
                             $getOrder->bind_param('s',$orderNumber);
                             $getOrder->execute();
                             $getOrder->bind_result($customerAddress,$labelAddress);
                             $getOrder->fetch();
                         ?>
-                        <p><strong>Recipient Name </strong><?=$recipientName?></p>
+                          <p><strong>Recipient Name: </strong><?=$recipientName?></p>
                         <p><strong>Address: </strong><?=$customerAddress?></p>
                         <p><strong>Label Address: </strong><?=$labelAddress?></p>
                     </article>
@@ -167,9 +187,9 @@
         <!--Sidebar-->
         <?php include 'assets/template/sidebar.php'?>
     </div>
-    <script src="assets/js/sidebar-menu-active.js"></script>
-    <script src="assets/js/activePage.js"></script>
-    <script src="assets/js/table.js"></script>
+    <script src="assets/sidebar-menu.js"></script>
+    <script src="assets/sidebar-menu-active.js"></script>
+    <script src="assets/table.js"></script>
 </body>
 
 </html>

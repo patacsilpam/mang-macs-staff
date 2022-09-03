@@ -39,7 +39,7 @@ require 'public/staff-pos.php'
                     <div class="products-container">
                     <div class="add-product-container">    
                         <?php
-                            if(isset($_SESSION["cart_item"])){
+                            if(isset($_SESSION["cart"])){
                                 $total_quantity = 0;
                                 $total_price = 0;
                         ?>	
@@ -65,7 +65,7 @@ require 'public/staff-pos.php'
                                     <div class="overflow-auto">
                                     
                                     <?php		
-                                        foreach ($_SESSION["cart_item"] as $item){
+                                        foreach ($_SESSION["cart"] as $item){
                                             $item_price = $item["quantity"]*$item["price"];
                                              $total_quantity += $item["quantity"];
                                                 $total_price += ($item["price"]*$item["quantity"]);
@@ -115,7 +115,7 @@ require 'public/staff-pos.php'
                                 <div class="empty-table-cart-btn">
                                     <button title="Cancel" type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancelCart"><i class="fas fa-window-close"></i> Cancel</button>
                                     <button title="Pay" type="button" class="btn btn-success" data-toggle="modal" data-target="#payModal"><i class="fas fa-file-invoice-dollar"></i> Pay</button>
-                                    <?php include 'assets/template/admin/pos-pay.php'?>
+                                    <?php include 'assets/template/pos-pay.php'?>
                                 </div>
                             </div>
                         </form>
