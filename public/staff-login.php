@@ -1,7 +1,7 @@
 <?php
-//session_start();
 $unameEmailError = $pwordError = "";
 function staffLogin(){
+    session_start();
     require 'public/connection.php';
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['btnSignin'])) {
@@ -23,7 +23,7 @@ function staffLogin(){
                         $_SESSION['staff-uname'] = $fetch['uname'];
                         $_SESSION['staff-email'] = $fetch['email'];
                         $_SESSION['staff-loggedIn'] = true;
-                        header('Location:orders.php');
+                        header('Location:dashboard.php');
                     } else{
                         $GLOBALS['unameEmailError'] = "Username or email not found.";
                     }

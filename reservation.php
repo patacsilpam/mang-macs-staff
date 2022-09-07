@@ -40,7 +40,6 @@ require 'public/staff-reservation.php';
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Date</th>
                                     <th scope="col">Date Schedule</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
@@ -52,24 +51,23 @@ require 'public/staff-reservation.php';
                             <tbody>
                                 <?php
                                     require 'public/connection.php';
-                                    $time = date('h:i a');
-                                    $queryReservation = $connect->query("SELECT DISTINCT(tblreservation.refNumber),tblreservation.id, 
+                                    date_default_timezone_set("Asia/Manila");
+                                    $queryReservation = $connect->query("SELECT DISTINCT(tblorderdetails.order_number),tblreservation.id, 
                                     tblreservation.token,tblorderdetails.created_at, tblreservation.fname,tblreservation.lname,
                                     tblreservation.guests,tblreservation.status,
-                                    tblorderdetails.order_status, tblorderdetails.order_type,
-                                    tblorderdetails.required_date, tblorderdetails.required_time, tblreservation.email 
+                                    tblreservation.scheduled_date, tblreservation.scheduled_time, tblreservation.email,
+                                    tblorderdetails.order_status, tblorderdetails.order_type
                                     FROM tblreservation LEFT JOIN tblorderdetails ON 
                                     tblreservation.refNumber = tblorderdetails.order_number 
                                     WHERE tblreservation.status IN ('Pending','Reserved') AND tblorderdetails.order_type = 'Dine In' 
-                                    AND STR_TO_DATE(CONCAT(scheduled_date,' ', scheduled_time),'%Y-%m-%d %h:%i %p') >= DATE_SUB(CURDATE(), INTERVAL 30 MINUTE)
-                                    ORDER BY STR_TO_DATE(CONCAT(tblorderdetails.required_date,' ',
-                                    tblorderdetails.required_time),'%Y-%m-%d %h:%i %p') ASC");
+                                    AND STR_TO_DATE(CONCAT(tblreservation.scheduled_date,' ', tblreservation.scheduled_time),'%Y-%m-%d %h:%i %p') >= DATE_SUB(CURDATE(), INTERVAL 30 MINUTE)
+                                    GROUP BY tblorderdetails.order_number
+                                    ORDER BY STR_TO_DATE(CONCAT(.tblreservation.scheduled_date,' ',tblreservation.scheduled_time),'%Y-%m-%d %h:%i %p') ASC");
                                     while($fetch = $queryReservation->fetch_assoc()){
                                    ?>
                                 <tr>
-                                    <td><?= $fetch['refNumber']?></td>
-                                    <td><?= $fetch['created_at']?></td>
-                                    <td><?= $fetch['required_date']?> <br> <?=$fetch['required_time']?></td>
+                                    <td><?= $fetch['order_number']?></td>
+                                    <td><?= $fetch['scheduled_date']?> <br> <?=$fetch['scheduled_time']?></td>
                                     <td><?= $fetch['fname'] ?> <?=$fetch['lname']?></td>
                                     <td><?= $fetch['email']?></td>
                                     <td><?= $fetch['guests']?></td>
@@ -81,7 +79,7 @@ require 'public/staff-reservation.php';
                                         <?php include 'assets/template/bookingStatus.php' ?>
                                     </td>
                                     <td>
-                                        <a href='reservation_summary.php?order_number=<?= $fetch['refNumber'];?>' title="View Order Details">
+                                        <a href='reservation_summary.php?order_number=<?= $fetch['order_number'];?>' title="View Order Details">
                                             <button class="btn btn-primary"><i class="fas fa-eye"></i></button>
                                         </a>
                                     </td>
