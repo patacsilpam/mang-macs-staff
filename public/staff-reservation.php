@@ -23,7 +23,7 @@ function updateBookStatus(){
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'mangmacspizzahouse@gmail.com';
-            $mail->Password = 'chaknqplsssfybtt'; //chak nqpl sssf ybtt
+            $mail->Password = 'ylzikpnelhxltves'; //chak nqpl sssf ybtt
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
             $mail->setFrom('mangmacspizzahouse@gmail.com', "Mang Mac's Marinero");
@@ -204,12 +204,16 @@ function updateBookStatus(){
             }
             else{
                 $completedTime = date('Y-m-d h:i:s');
+                //insert report sale in table `tblreport`
+                //update order status to order completed in table `tblorderdetails`
                 $updateOrderStatus = $connect->prepare("UPDATE tblorderdetails SET order_status=?,completed_time=? WHERE order_number=?");
                 $updateOrderStatus->bind_param('sss',$bookStatus,$completedTime,$refNumber);
                 $updateOrderStatus->execute();
+                //update booking status to finished in table `tblreservation`
                 $updateBookStatus = $connect->prepare("UPDATE tblreservation SET status=? WHERE id=?");
                 $updateBookStatus->bind_param('si',$bookStatus,$id);
                 $updateBookStatus->execute();
+                header('Location:reservation.php');
             }
         }
     }
@@ -224,7 +228,7 @@ function noShowsReservation(){
     $customerName = array();
     $guests = array();
     $scheduledDate = array();
-    $getId = $connect->query("SELECT * FROM tblreservation WHERE STR_TO_DATE(CONCAT(scheduled_date,' ',scheduled_time), '%Y-%m-%d %h:%i %p') <= DATE_SUB(NOW(),INTERVAL 30 MINUTE) AND status='Reserved'");
+    $getId = $connect->query("SELECT * FROM tblreservation WHERE STR_TO_DATE(CONCAT(scheduled_date,' ',scheduled_time), '%Y-%m-%d %h:%i %p') <= DATE_SUB(NOW(),INTERVAL 1 HOUR) AND status='Reserved'");
     while($fetch = $getId->fetch_assoc()){
         $bookingNumber[] =  $fetch['refNumber'];
         $email[] = $fetch['email'];
@@ -248,7 +252,7 @@ function noShowsReservation(){
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'mangmacspizzahouse@gmail.com';
-        $mail->Password = 'chaknqplsssfybtt'; //chak nqpl sssf ybtt
+        $mail->Password = 'ylzikpnelhxltves'; //chak nqpl sssf ybtt
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
         $mail->setFrom('mangmacspizzahouse@gmail.com', "Mang Mac's Marinero");

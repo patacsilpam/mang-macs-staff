@@ -27,8 +27,12 @@
                             <label class="form-check-label">Reserved</label>
                         </div>
                         <div>
-                            <input class="form-check-input" type="radio" name="bookStatus" value="Not Available" <?php if($fetch['status'] == "Not Available"){ echo "checked=checked";} ?> style="height:15px; width:15px">
+                            <input class="form-check-input" type="radio" name="bookStatus" value="Cancelled" <?php if($fetch['status'] == "Cancelled"){ echo "checked=checked";} ?> style="height:15px; width:15px">
                             <label class="form-check-label">Not Available</label>
+                        </div>
+                        <div>
+                            <input class="form-check-input" type="radio" name="bookStatus" value="Finished" <?php if($fetch['status'] == "Completed"){ echo "checked=checked";} ?> style="height:15px; width:15px">
+                            <label class="form-check-label">Finished</label>
                         </div>
                     </div>
                 </div>

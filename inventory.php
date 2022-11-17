@@ -8,7 +8,7 @@
     <meta name="Inventory" content="Mang Macs-Inventory">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/4adbff979d.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
@@ -24,7 +24,7 @@
     <div class="grid-container">
         <!--header-->
         <header class="nav-container">
-            <h3>Inventory</h3>
+            <h3 class="mx-2 font-weight-normal">Inventory</h3>
             <ul class="nav-list">
                 <?php include 'assets/template/navbar.php'?>
             </ul>
@@ -60,11 +60,14 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">Code</th>
                                     <th scope="col">Purchased Date</th>
                                     <th scope="col">EXP Date</th>
-                                    <th scope="col">Item Name</th>
-                                    <th scope="col">Item Purchased</th>
-                                    <th scope="col">Item Stock</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Variation</th>
+                                    <th scope="col">Purchased</th>
+                                    <th scope="col">Stock</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -80,14 +83,17 @@
                                     $todayDate = new DateTime($today);
                                     $exp = new DateTime($endDate);
                                     if ($exp > $todayDate) {
-                                        $highligtRow = "#e6dccc";
+                                        $highligtRow = "#fffff";
                                     }
                                 ?>
                                 <tr style="background: <?php echo $highligtRow; ?>;">
                                     <th scope="row"><?= $fetch['id'] ?></th>
+                                    <td><?=$fetch['itemCode']?></td>
                                     <td><?= date('F d, Y',strtotime($fetch['created_at'])) ?></td>
                                     <td><?= date('F d, Y',strtotime($fetch['expiration_date'])) ?></td>
                                     <td><?= $fetch['product'] ?></td>
+                                    <td><?= $fetch['itemCategory'] ?></td>
+                                    <td><?= $fetch['itemVariation'] ?></td>
                                     <td><?= $fetch['quantityPurchased'] ?></td>
                                     <td><?= $fetch['quantityInStock'] ?></td>
                                     <td style="display: flex;">

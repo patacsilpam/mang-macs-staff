@@ -2,9 +2,9 @@
 <li class="dropdown">
     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
-        <i class="fas fa-bell text-primary"><sup><?= $fetchNotif[0] ?></sup></i>
+        <i class="fas fa-bell text-primary bell-icon"><sup id="countNotif"><?= $fetchNotif[0] ?></sup></i>
     </a>
-    <div class="dropdown-menu dropdown-bell-icon" aria-labelledby="dropdownMenuLink" style="background:#ffffff">
+    <div class="dropdown-menu dropdown-bell-icon" aria-labelledby="dropdownMenuLink">
         <a class="dropdown-item" href="inventory.php">
         <?php
             //display product that is about to expire
@@ -20,8 +20,8 @@
                 ?>
             <div class="dropdown-notif">
                 <b>About to Expire</b>
-                <p class="text-dark">The item <i>( <?= $fetchItem['product'] ?> )</i> you purchased from <br> <?= $today ?>
-                    is about to expire on <br><?= $expDate ?>.</p>
+                <p class="text-dark">The item <i>( <?= $fetchItem['product']?>)</i> you purchased from <br> <?= $today ?>
+                    is about to expire on <br><?= $expDate ?> (#<?=$fetchItem['itemCode']?>) .</p>
                 <?php if ($timeLapse > 0) {
                             echo $timeLapse . '<small> days to go</small>';
                         } else {
@@ -36,7 +36,6 @@
         </a>
     </div>
 </li>
-<li><a href="settings.php" title="Settings"><i class="fas fa-cog text-secondary"></i></a></li>
 <li class="dropdown">
     <button type="button" class="button admin-name-right" style="color: black;" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
@@ -54,3 +53,4 @@
     border: none;
 }
 </style>
+<script src="assets/js/notif-bell.js"></script>

@@ -1,6 +1,7 @@
 <?php 
 require 'public/staff-inventory.php';
 require 'public/staff-courier.php';
+require 'public/staff-orders-orders.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +13,7 @@ require 'public/staff-courier.php';
     <meta name="Orders" content="Mang Macs-Orders">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/4adbff979d.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
@@ -30,7 +31,7 @@ require 'public/staff-courier.php';
     <div class="grid-container">
         <!--Navigation-->
         <header class="nav-container">
-            <h3>Order Summary</h3>
+            <h3 class="mx-2 font-weight-normal">Order Summary</h3>
             <ul class="nav-list">
                 <?php include 'assets/template/navbar.php' ?>
             </ul>
@@ -40,7 +41,7 @@ require 'public/staff-courier.php';
             <section class="order-summary-1">
                 <article class="order-summary-number">
                     <h3>
-                        <a href="orders.php" title="Back"><i class="fa fa-arrow-circle-left"></i></a>
+                        <a href="#" onclick="history.back()" title="Back"><i class="fa fa-arrow-circle-left"></i></a>
                         Order # : <?=$_GET['order_number']?>
                     </h3>
                     <i>Orders / Order # : <?=$_GET['order_number']?></i>
@@ -54,13 +55,13 @@ require 'public/staff-courier.php';
                         $getOrderSummary = $connect->prepare("SELECT tblcustomerorder.order_number,tblcustomerorder.courier,tblcustomerorder.customer_name,
                             tblorderdetails.created_at,tblorderdetails.required_date,tblorderdetails.required_time,
                             tblorderdetails.order_type,tblorderdetails.order_status,tblcustomerorder.email,
-                            tblcustomerorder.phone_number,tblcustomerorder.total_amount,tblcustomerorder.delivery_fee
+                            tblcustomerorder.phone_number,tblcustomerorder.total_amount,tblcustomerorder.delivery_fee,tblcustomerorder.token,tblorderdetails.preparation_time
                             FROM tblcustomerorder LEFT JOIN tblorderdetails
                             ON tblcustomerorder.order_number = tblorderdetails.order_number
                             WHERE tblorderdetails.order_number=? LIMIT 1");
                         $getOrderSummary->bind_param('s',$getOrderNumber);
                         $getOrderSummary->execute();
-                        $getOrderSummary->bind_result($orderNumber,$courierName,$customerName,$placedOn,$requiredDate,$requiredTime,$orderType,$orderStatus,$email,$phoneNumber,$totalAmount,$deliveryFee);
+                        $getOrderSummary->bind_result($orderNumber,$courierName,$customerName,$placedOn,$requiredDate,$requiredTime,$orderType,$orderStatus,$email,$phoneNumber,$totalAmount,$deliveryFee,$token,$preparedTime);
                         while($getOrderSummary->fetch()){
                         $GLOBALS['totalAmount'] = $totalAmount;
                    ?>
@@ -88,7 +89,7 @@ require 'public/staff-courier.php';
                         <p><strong>Order Status:</strong> <?=$orderStatus?></p>
                         <p><strong>Email:</strong> <?=$email?></p>
                         <p><strong>Phone Number:</strong> <?=$phoneNumber?></p>
-                        <p><strong>Total Amount:</strong> <?=$totalAmount + $deliveryFee?></p>
+                        <p><strong>Total Amount:</strong> ₱ <?=$totalAmount + $deliveryFee?>.00</p>
                         <p><strong><a href="view-payment.php?order_number=<?= $getOrderNumber?>">View Payment</a></strong></p>
                         <?php } ?>
                     </article>
@@ -120,6 +121,7 @@ require 'public/staff-courier.php';
                                         <th scope="col">Unit Price</th>
                                         <th scope="col">Category</th>
                                         <th scope="col">Add Ons</th>
+                                        <th scope="col">Add Ons Price</th>
                                         <th scope="col">Subtotal</th>
                                     </tr>
                                 </thead>
@@ -128,22 +130,25 @@ require 'public/staff-courier.php';
                                     require 'public/connection.php';
                                     $recipientName="";
                                     $orderNumber = $_GET['order_number'];
-                                    $getOrderSummary = $connect->prepare("SELECT order_number,product_name,quantity,price,product_variation,add_ons,recipient_name FROM tblorderdetails WHERE order_number=?");
+                                    $getOrderSummary = $connect->prepare("SELECT order_number,product_name,product_category,product_variation,quantity,price,add_ons,add_ons_fee,recipient_name,order_type FROM tblorderdetails WHERE order_number=?");
                                     echo $connect->error;
                                     $getOrderSummary->bind_param('s',$orderNumber);
                                     $getOrderSummary->execute();
-                                    $getOrderSummary->bind_result($orderId,$productName,$quantity,$price,$variation,$addOns,$recipientName);
+                                    $getOrderSummary->bind_result($orderId,$productName,$category,$variation,$quantity,$price,$addOns,$addOnsFee,$recipientName,$orderType);
                                     while($getOrderSummary->fetch()){
                                    
                                         ?>
                                     <tr>
                                         <td><?=$orderId?></td>
                                         <td><?=$productName?></td>
-                                        <td><?=$quantity?></td>
-                                        <td><?=$price?></td>
+                                        <td><?=$category?></td>
                                         <td><?=$variation?></td>
+                                        <td><?=$quantity?></td>
+                                        <td><?=$price?>.00</td>
                                         <td><?=$addOns?></td>
-                                        <td><?=$subTotal = $price * $quantity;?>.00</td>
+                                        <td><?=$addOnsFee?>.00</td>
+                                        <td><?=($price * $quantity) + ($addOnsFee * $quantity);?>.00</td>
+                                        <td><?=$orderType?></td>
                                     </tr>
                                     <?php
                                     }
@@ -152,14 +157,47 @@ require 'public/staff-courier.php';
                                 </tbody>
                                <tfoot>
                                     <tr>
-                                        <td colspan="5"></td>
+                                        <td colspan="6"></td>
                                         <td><b>Delivery Fee</b>: </td>
                                         <td><?= $deliveryFee?>.00</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="5"></td>
+                                        <td colspan="6"></td>
                                         <td><b>Grand Total</b>: </td>
-                                        <td>₱ <?= $totalAmount?>.00</td>
+                                        <td>₱ <?= $totalAmount + $deliveryFee?>.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4"></td>
+                                        <td><b>Order Status</b><span class="mx-3 text-danger" style="font-size:1.5rem">*</span></td>
+                                        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST">
+                                            <td>
+                                                <div id="pickup-orders">
+                                                    <input type="hidden" name="email" value="<?=$email?>">
+                                                    <input type="hidden" name="customerName" value="<?=$customerName?>">
+                                                    <input type="hidden" name="orderNumber" value="<?=$orderNumber?>">
+                                                    <input type="hidden" name="quantity" value="<?=$quantity?>">
+                                                    <input type="hidden" name="category" value="<?=$category?>">
+                                                    <input type="hidden" name="variation" value="<?=$variation?>">
+                                                    <input type="hidden" name="sales" value="<?=$totalAmount?>">
+                                                    <input type="hidden" id="order-type" name="orderType" value="<?=$orderType?>">
+                                                    <input type="hidden" name="token" value="<?=$token?>">
+                                                    <input type="hidden" name="orderDate" value="<?=$placedOn?>">
+                                                    <input type="hidden" name="requiredTime" value="<?=$requiredTime?>">
+                                                    <input type="hidden" name="preparedTime" value="<?=$preparedTime?>">
+                                                    <select name="orderStatus" class="form-control" style="font-size:1.3rem" id="order-status">
+                                                        <option value="Pending" <?php if($orderStatus == "Pending") { echo 'selected ? "selected"';}?>>Pending</option>
+                                                        <option value="Order Processing" <?php if($orderStatus == "Order Processing") { echo 'selected ? "selected"';}?>>Processing (Confirm Order)</option>
+                                                        <option id="out-delivery" value="Out for Delivery" <?php if($orderStatus == "Out for Delivery") { echo 'selected ? "selected"';}?>>Out for Delivery (Deliver)</option>
+                                                        <option id="ready-pickup" value="Ready for Pick Up" <?php if($orderStatus == "Ready for Pick Up") { echo 'selected ? "selected"';}?>>Ready for Pick Up (Pick Up)</option>
+                                                        <option value="Order Completed" <?php if($orderStatus == "Order Completed") { echo 'selected ? "selected"';}?>>Complete</option>
+                                                        <option value="Cancelled" <?php if($orderStatus == "Cancelled") { echo 'selected ? "selected"';}?>>Cancel</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button type="submit" name="btn-update" class="btn btn-primary">Update Status</button>
+                                            </td>
+                                        </form>
                                     </tr>
                                </tfoot>
                             </table>
@@ -187,9 +225,11 @@ require 'public/staff-courier.php';
         <!--Sidebar-->
         <?php include 'assets/template/sidebar.php'?>
     </div>
-    <script src="assets/sidebar-menu.js"></script>
-    <script src="assets/sidebar-menu-active.js"></script>
-    <script src="assets/table.js"></script>
+    <script src="assets/js/sidebar-menu.js"></script>
+    <script src="assets/js/sidebar-menu-active.js"></script>
+    <script src="assets/js/table.js"></script>
+    <script src="assets/js/highlight-order-status.js"></script>
+    <script src="assets/js/order-status-visibility.js"></script>
 </body>
 
 </html>

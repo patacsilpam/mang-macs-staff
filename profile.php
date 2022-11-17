@@ -9,7 +9,7 @@
     <meta name="Profile" content="Mang Macs-Profile">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/4adbff979d.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
@@ -25,7 +25,7 @@
     <div class="grid-container">
         <!--Navigation-->
         <header class="nav-container">
-            <h3>Profile</h3>
+            <h3 class="mx-2 font-weight-normal">Profile</h3>
             <ul class="nav-list">
                 <?php include 'assets/template/navbar.php'?>
             </ul>
@@ -41,6 +41,7 @@
                                 class="profile-information-container" enctype="multipart/form-data">
                                 <?php
                                 $email = $_SESSION['staff-email'];
+                                $GLOBALS['eSignature'] = "";
                                 $check_admin_profile = $connect->prepare("SELECT * FROM tblusers WHERE email=?");
                                 $check_admin_profile->bind_param('s', $email);
                                 $check_admin_profile->execute();
@@ -119,6 +120,14 @@
     </div>
     <script src="assets/js/sidebar-menu.js"></script>
     <script src="assets/js/sidebar-menu-active.js"></script>
+    <script type="text/javascript">
+        var sig = $('#signature-con').signature({syncField: '#signature-base64', syncFormat: 'PNG'});
+        $('#clear').click(function(e) {
+            e.preventDefault();
+            sig.signature('clear');
+            $("#signature-base64").val('');
+        });
+    </script>
 </body>
 
 </html>

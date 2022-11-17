@@ -20,7 +20,7 @@ function insertProducts(){
             $preparationTime = $_POST['preparedTime'];
             $productImage = basename($_FILES['imageProduct']['name'] ?? '');
             $imageTemp = $_FILES['imageProduct']['tmp_name'] ?? '';
-            $imageServerUrl = "http://10.68.253.181/mang-macs-admin-web/assets/img-products/".$productImage;
+            $imageServerUrl = "http://192.168.1.70/mang-macs-admin-web/assets/img-products/".$productImage;
             $created_at = date('Y-m-d h:i:s');
             $imageFolderPath = "assets/img-products/".$productImage;
             move_uploaded_file($imageTemp,$imageFolderPath);
@@ -101,7 +101,7 @@ function updateProducts(){
             $editImageProduct = basename($_FILES['editImageProduct']['name'] ?? '');
             $editImageProductTemp = $_FILES["editImageProduct"]["tmp_name"] ?? '';
             $imageFolderPath = "assets/img-products/".$editImageProduct;
-            $imageServerUrl = "http://10.68.253.181/mang-macs-admin-web/assets/img-products/".$editImageProduct;
+            $imageServerUrl = "http://192.168.1.70/mang-macs-admin-web/assets/img-products/".$editImageProduct;
             $edited_at = date('Y-m-d h:i:s');
             //update product
             if  ($editImageProduct  != '') {
@@ -175,10 +175,94 @@ function updateProductStocks(){
         }
     }
 }
+//create or insert add-on data
+function createAddOns(){
+    require 'public/connection.php';
+    if(isset($_SERVER["REQUEST_METHOD"]) == "POST"){
+        if(isset($_POST['btn-save-choices'])){
+            echo $connect->error;
+            $code = bin2hex(random_bytes(20));
+            $addOns = $_POST['add-ons-name'];
+            $addOnsPrice = $_POST['add-ons-price'];
+            $choiceGroup = $_POST['choiceGroup'];
+            $addOnsQty = $_POST['add-ons-quantity'];
+           
+            foreach($addOns as $addOnsIndex => $addOnsVal){
+                $id = null;
+                $newAddOns = $addOnsVal;
+                $newAddOnsPrice = $addOnsPrice[$addOnsIndex];
+                $newAddOnsQty = $addOnsQty[$addOnsIndex];
+                $insertAddOns = $connect->prepare("INSERT INTO tbladdons(id,add_ons_code,add_ons,add_ons_price,add_ons_category,add_ons_quantity,add_ons_available_qty) VALUES (?,?,?,?,?,?,?)");
+                $insertAddOns->bind_param('issisii',$id,$code,$newAddOns,$newAddOnsPrice,$choiceGroup,$newAddOnsQty,$newAddOnsQty);
+                if($insertAddOns->execute()){
+                    header('Location:create-add-on.php');
+                }
+            }
+        }
+    }
 
+}
+//update each add-on name and price
+function editChoiceGroup(){
+    require 'public/connection.php';
+    if(isset($_SERVER["REQUEST_METHOD"]) == "POST"){
+        if(isset($_POST['btn-edit-choices'])){
+            $ids = $_POST['ids'];
+            $addOnsName = $_POST['addOns'];
+            $addOnsPrice = $_POST['addOnsPrice'];
+            $addOnsQty = $_POST['addOnsQuantity'];
+            $adjustQty = $_POST['adjustQty'];
+            $availStockQty = $_POST['availStockQty'];
+            foreach($ids as $idsIndex => $idsVal){
+                $newId = $idsVal;
+                $newAdjustQty = $adjustQty[$idsIndex];
+                $newAddOns = $addOnsName[$idsIndex];
+                $newAddOnsPrice = $addOnsPrice[$idsIndex];
+                $newAddOnsQty = $addOnsQty[$idsIndex] + $newAdjustQty;
+                $newAvailStockQty = $availStockQty[$idsIndex] + $newAdjustQty;
+                $editChoices = $connect->prepare("UPDATE tbladdons SET add_ons=?,add_ons_price=?,add_ons_quantity=?,add_ons_available_qty=? WHERE id=?");
+                $editChoices->bind_param('siiii',$newAddOns,$newAddOnsPrice,$newAddOnsQty,$newAvailStockQty,$newId);
+                if($editChoices->execute()){
+                    header('Location:create-add-on.php?updated');
+                }
+            }
+        }
+    }
+}
+//remove specific add-on of menu category
+function removeAddOn(){
+    require 'public/connection.php';
+    if(isset($_SERVER["REQUEST_METHOD"]) == "POST"){
+        if(isset($_POST['btn-remove-addOns'])){
+            $ids = $_POST['btn-remove-addOns'];
+            $removeChoice = $connect->prepare("DELETE FROM tbladdons WHERE id=?");
+            $removeChoice->bind_param('i',$ids);
+            if($removeChoice->execute()){
+                header('Location:create-add-on.php?deleted');
+            }
+        }
+    }
+}
+//remove group of add-on in specific menu category
+function removeChoiceGroup(){
+    require 'public/connection.php';
+    if(isset($_SERVER["REQUEST_METHOD"]) == "POST"){
+        if(isset($_POST['btn-delete-choiceGroup'])){
+            $addOnsCategory = $_POST['add-ons-category'];
+            $removeChoice = $connect->prepare("DELETE FROM tbladdons WHERE add_ons_category=?");
+            $removeChoice->bind_param('s',$addOnsCategory);
+            if($removeChoice->execute()){
+                header('Location:create-add-on.php?deleted');
+            }
+        }
+    }
+}
 insertProducts();
 updateProducts();
 deleteProducts();
 updateProductStocks();
-
+createAddOns();
+editChoiceGroup();
+removeAddOn();
+removeChoiceGroup();
 ?>

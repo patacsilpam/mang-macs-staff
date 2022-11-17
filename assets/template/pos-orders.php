@@ -19,7 +19,7 @@
                     </select>
                     <div style="">
                         
-                        <input type="text" name="sales" value="<?php if($discountedPrice == 0){ echo $total;} else{echo $discountedPrice;}?>">
+                        <input type="hidden" name="sales" value="<?php if($discountedPrice == 0){ echo $total;} else{echo $discountedPrice;}?>">
                     </div>
                 </div>
                 <div class="modal-footer">
